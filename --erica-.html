@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para a minha Èrica</title>
+    <style>
+        /* Resetando algumas propriedades padrão do navegador */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5e1e1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            flex-direction: column;
+            color: #3d3d3d;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #ff6b81;
+            margin-bottom: 30px;
+            font-family: 'Georgia', serif;
+        }
+
+        #mensagem-superior {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff6b81;
+            margin-bottom: 30px;
+            font-family: 'Georgia', serif;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        #sim,
+        #nao {
+            background-color: #ff6b81;
+            color: white;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+            margin: 10px;
+        }
+
+        #sim {
+            background-color: #ffb3c6;
+        }
+
+        #sim:hover,
+        #nao:hover {
+            background-color: #ff6b81;
+            transform: scale(1.1);
+        }
+
+        #mensagem {
+            margin-top: 30px;
+            font-size: 1.3rem;
+            color: #ff6b81;
+            font-weight: bold;
+            font-family: 'Georgia', serif;
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 15px;
+            background-color: rgba(255, 107, 129, 0.2);
+            border-radius: 10px;
+            display: inline-block;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            color: red;
+            animation: heartAnimation 3s forwards;
+        }
+
+        @keyframes heartAnimation {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.5);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: scale(3);
+                opacity: 0;
+                top: 50vh;
+            }
+        }
+
+        .mensagem-erro {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 107, 129, 0.7);
+            padding: 10px 20px;
+            color: white;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            opacity: 0;
+            animation: showMessage 1s forwards;
+        }
+
+        @keyframes showMessage {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Deixa eu te fazer uma perguntinha rápida ❤️ </h1>
+
+    <div id="mensagem-superior">
+        Sabia que você é a mulher mais linda desse mundo?
+    </div>
+
+    <!-- Contêiner para centralizar os botões -->
+    <div class="button-container" id="button-container">
+        <button id="sim" onclick="simClick()">Sim</button>
+        <button id="nao" onclick="naoClick()">Não</button>
+    </div>
+
+    <!-- Div para mostrar a mensagem ao clicar no "Sim" -->
+    <div id="mensagem"></div>
+
+    <script>
+        var simButton = document.getElementById("sim");
+        var naoButton = document.getElementById("nao");
+        var buttonContainer = document.getElementById("button-container");
+
+        // Tamanho máximo da tela
+        var maxWidth = window.innerWidth;
+        var maxHeight = window.innerHeight;
+
+        // Array de mensagens aleatórias
+        var mensagensErradas = [
+            "Resposta errada, minha gatinha! Tem certeza que essa é a resposta certa?",
+            "Hmmm... Acho que você se enganou, tenta de novo, ok?",
+            "Eita, quase! Você já pensou bem nessa resposta?",
+            "Ahh, não é bem isso... Será que você tem certeza?",
+            "Errou! Mas tá tudo bem, tenta mais uma vez!"
+        ];
+
+        function naoClick() {
+            // Gerar posições aleatórias para o botão "Não"
+            var maxNaoWidth = window.innerWidth - naoButton.offsetWidth;
+            var maxNaoHeight = window.innerHeight - naoButton.offsetHeight;
+
+            var randomLeft = Math.floor(Math.random() * maxNaoWidth);
+            var randomTop = Math.floor(Math.random() * maxNaoHeight);
+
+            // Mover o botão "Não" para uma posição aleatória
+            naoButton.style.position = 'absolute'; // Garantir que a posição será alterada
+            naoButton.style.left = randomLeft + "px";
+            naoButton.style.top = randomTop + "px";
+
+            // Fazer o botão "Sim" crescer a cada clique no "Não"
+            var currentWidth = simButton.offsetWidth;
+            var currentHeight = simButton.offsetHeight;
+
+            // Se o botão "Sim" ainda não ocupar a tela toda, aumente o tamanho
+            if (currentWidth < maxWidth && currentHeight < maxHeight) {
+                simButton.style.width = currentWidth + 20 + "px";
+                simButton.style.height = currentHeight + 10 + "px";
+            }
+
+            // Criar corações aleatórios
+            createHeart();
+
+            // Exibir uma mensagem aleatória do array
+            var mensagemAleatoria = mensagensErradas[Math.floor(Math.random() * mensagensErradas.length)];
+            showMessage(mensagemAleatoria);
+        }
+
+        function showMessage(mensagem) {
+            var mensagemDiv = document.createElement('div');
+            mensagemDiv.classList.add('mensagem-erro');
+            mensagemDiv.innerHTML = mensagem;
+            document.body.appendChild(mensagemDiv);
+
+            // Remover a mensagem após 1 segundo
+            setTimeout(function () {
+                mensagemDiv.remove();
+            }, 3000); // A mensagem desaparece após 1 segundo
+        }
+
+        function simClick() {
+            // Esconder os botões quando o "Sim" for clicado
+            buttonContainer.style.display = "none";
+
+            // Mostrar a mensagem
+            var mensagemDiv = document.getElementById("mensagem");
+            mensagemDiv.innerHTML = "Você sempre será a mais linda do mundo todinho! Não deixe ninguém dizer o contrário disso, isso serve pra você também certo? coloque isso nessa sua cachola❤️";
+        }
+
+        // Função para criar corações aleatórios
+        function createHeart() {
+            var heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+
+            // Definir a posição aleatória dos corações
+            var randomLeft = Math.floor(Math.random() * window.innerWidth);
+            var randomTop = Math.floor(Math.random() * window.innerHeight);
+
+            heart.style.left = randomLeft + "px";
+            heart.style.top = randomTop + "px";
+
+            // Adicionar o coração à tela
+            document.body.appendChild(heart);
+
+            // Remover o coração após a animação
+            setTimeout(function () {
+                heart.remove();
+            }, 3000); // Após 3 segundos
+        }
+    </script>
+</body>
+
+</html>
